@@ -35,6 +35,8 @@ var app = http.createServer(function(request,response){
     </body>
     </html>
     `
+    //변수에다 한 페이지의 코드 전체를 넣어 실행시킴
+    //a태그를 이용해 queryData에 값을 넣어주어 동적인 페이지 만들기
     response.end(template);
  
 });
