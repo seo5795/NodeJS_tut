@@ -7,6 +7,8 @@ var fs = require('fs');
 // console.log(result);
 // console.log('C');
 
+
+//readFile: 비동기적 동시에 처리
 console.log('A');
 fs.readFile('syntax/sample.txt', 'utf8', function(err, result){
     console.log(result);
