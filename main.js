@@ -88,18 +88,21 @@ var app = http.createServer(function (request, response) {
   }
     else if(pathname==='/create_process'){
       var body = '';
-      request.on('data', function(data){
+      request.on('data', function(data){//데이터를 전송할 때 데이터를 한번에 처리하면 무리가 생기므로 조각조각의 정보를 수신할 때마다 서버가 콜백함수를 호출 하도록 약속 
         body = body + data;
       });
       request.on('end', function(){
-        //정보수신이 끝났을 때
+        //정보수신이 끝났을 때 콜백함수 호출
+        //정보수신이 끝남
         var post = qs.parse(body);
         var title = post.title;
         var description = post.description;
-        console.log(post.title);
+        fs.writeFile(`data/${title}`,description, 'utf8', function(err){
+          response.writeHead(302, {Location: `/?id=${title}`});//페이지를 REDIRECTION하라는 뜻:302
+          response.end('success');
+        })
       })
-      response.writeHead(200);
-      response.end('success');
+      
     }
    else {
     // /?형식이 아닐때
