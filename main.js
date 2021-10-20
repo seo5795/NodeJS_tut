@@ -4,6 +4,7 @@ var url = require('url');
 var qs = require('querystring');
 var template = require('./lib/template.js')
 var path = require('path');
+const sanitizeHtml = require('sanitize-html');//모듈화된 xss차단 코드
 
 var app = http.createServer(function (request, response) {
   var _url = request.url;
@@ -31,13 +32,15 @@ var app = http.createServer(function (request, response) {
         var filteredId = path.parse(queryData.id).base;
         fs.readFile(`data/${filteredId}`, `utf8`, function (err, description) {
           var title = queryData.id;
+          var sanitizeTitle = sanitizeHtml(title);//sanitiz-html적용
+          var sanitizedDescription = sanitizeHtml(description)//sanitiz-html적용
           var list = template.list(filelist);
-          var html = template.html(title, list, `<h2>${title}</h2> 
-        <p>${description}</p>`,
+          var html = template.html(title, list, `<h2>${sanitizeTitle}</h2> 
+        <p>${sanitizedDescription}</p>`,
         `<a href = "/create">create</a>
-         <a href= "/update?id=${title}">update</a>
+         <a href= "/update?id=${sanitizeTitle}">update</a>
          <form action="delete_process" method="post">
-          <input type="hidden" name= "id" value="${title}">
+          <input type="hidden" name= "id" value="${sanitizeTitle}">
           <input type = "submit" value = "delete">
         </form>
           `);
