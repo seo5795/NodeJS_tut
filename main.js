@@ -11,10 +11,12 @@ var app = http.createServer(function (request, response) {
   var queryData = url.parse(_url, true).query;
   //url.parse(_url, true): url을 분석하는 코드, 주어진 url정보를 분석해서 쉽게 쓸 수 있도록 해줌(추후 알려줄 예정)
   var pathname = url.parse(_url, true).pathname;
+  //pathname: queryString을 제외한 것을 보여줌 ex)/
+  //path: queryString을 포함한 것을 보여줌 ex)/?id=css
 
   if (pathname === '/') {
     // pathname === '/': /?형식일때
-    if (queryData.id === undefined) {
+    if (queryData.id === undefined) {//index페이지에서 id값이 없을 때
       fs.readdir('./data', function (error, filelist) {
         var title = 'Welcome';
         var description = 'Hello, Node.js';
@@ -27,10 +29,12 @@ var app = http.createServer(function (request, response) {
       })
 
 
-    } else {
+    } else {//index페이지에서 id 값이 있을 때
       fs.readdir('./data', function (error, filelist) {
+        //readdir:특정 디렉토리의 파일을 배열형태로 만들어 사용가능하게 해줌
+        //결과: [ 'CSS', 'HTML', 'JavaScript' ]
         var filteredId = path.parse(queryData.id).base;
-        fs.readFile(`data/${filteredId}`, `utf8`, function (err, description) {
+        fs.readFile(`data/${filteredId}`, `utf8`, function (err, description) {//파일안의 내용을 읽어옴
           var title = queryData.id;
           var sanitizeTitle = sanitizeHtml(title);//sanitiz-html적용
           var sanitizedDescription = sanitizeHtml(description)//sanitiz-html적용
@@ -156,7 +160,7 @@ var app = http.createServer(function (request, response) {
 
 
 app.listen(3000);
-
+//listen:요청에 대해서 서버를 응답시킬수 있는 모듈
 
 // var url = require('url');
 // var queryData = url.parse(_url, true).query; query data의 값을 추출해줌
