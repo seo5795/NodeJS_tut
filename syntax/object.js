@@ -17,6 +17,6 @@ var roles = {
 console.log(roles.designer);//k8805
 console.log(roles['designer']);//k8805
 
-for(var name in roles){
-    console.log('object => ', name, 'value => ', roles[name]);
+for(var id in roles){
+    console.log('object => ', id, 'value => ', roles[id]);
 }

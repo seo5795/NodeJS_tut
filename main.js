@@ -83,9 +83,9 @@ var app = http.createServer(function (request, response) {
         var post = qs.parse(body);
         var title = post.title;
         var description = post.description;
-        fs.writeFile(`data/${title}`,description, 'utf8', function(err){
+        fs.writeFile(`data/${title}`,description, 'utf8', function(err){//fs.writeFile(파일 작성 함수)
           response.writeHead(302, {Location: `/?id=${title}`});//페이지를 REDIRECTION하라는 뜻:302
-          response.end('success');
+          response.end();
         })
       });
     }else if(pathname === `/update`){
@@ -103,7 +103,7 @@ var app = http.createServer(function (request, response) {
         </form>
           `,
         `<a href = "/create">create</a> <a href= "/update?id=${title}">update</a>`);
-
+          //원래 파일은 hidden값으로, 바꿀 값은 input으로
           response.writeHead(200);
           response.end(html);
         });
@@ -121,6 +121,7 @@ var app = http.createServer(function (request, response) {
         var description = post.description;
         var id = post.id;
         fs.rename(`data/${id}`, `data/${title}`, function(error){
+          //파일명 바꾸는 함수
           fs.writeFile(`data/${title}`,description, 'utf8', function(err){
             response.writeHead(302, {Location: `/?id=${title}`});
             response.end('');
